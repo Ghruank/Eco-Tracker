@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Plus, Globe, Image, Video, MessageCircle } from 'lucide-react';
+import Sidebar from '../dashboard/sidebar';
 
 function TwitterFeed() {
   const [posts, setPosts] = useState([
@@ -61,6 +62,7 @@ function TwitterFeed() {
   };
 
   return (
+    
     <div className="bg-gray-900 min-h-screen text-white">
       {/* Create Post Section */}
       <div className="p-4 bg-gray-800 border-b border-gray-700 space-y-4">
