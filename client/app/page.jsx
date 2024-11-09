@@ -70,19 +70,16 @@ export default function Component() {
               >
                 Greenit.
               </a>
-
               <div className="items-center hidden space-x-6 nav-links md:flex">
-                {["Button1", "Button2", "Button3", "Button4"].map(
-                  (button, index) => (
-                    <a
-                      key={index}
-                      href="#"
-                      className={`${poppins.className} text-gray-800 hover:text-green-700 transition-colors`}
-                    >
-                      {button}
-                    </a>
-                  )
-                )}
+                {["Login", "Signup"].map((button, index) => (
+                  <a
+                    key={index}
+                    href={`/${button}`}
+                    className={`${poppins.className} text-gray-800 hover:text-green-700 transition-colors`}
+                  >
+                    {button}
+                  </a>
+                ))}
               </div>
 
               <button className="text-gray-600 md:hidden">

@@ -24,15 +24,41 @@ export default function Home() {
     setIsLoggedIn(false);
     setSteps([]);
   };
+  const getActivityName = (activityType) => {
+    const activities = {
+        7: 'Walking',
+        8: 'Running',
+        1: 'Biking',
+        3: 'Still (not moving)',
+        4: 'Unknown',
+        9: 'In vehicle',
+        // Add more activity types as needed
+    };
+    return activities[activityType] || 'Unknown';
+  };  
 
   const fetchSteps = async (token) => {
-    const response = await fetch('http://localhost:5000/steps', {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    try {
+      const response = await fetch('http://localhost:5000/steps', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
-    const data = await response.json();
-    setSteps(data);
+      
+      const data = await response.json();
+      if (data.error) {
+        console.error('API Error:', data.error);
+        return;
+      }
+      
+      setSteps(data);
+    } catch (error) {
+      console.error('Error fetching steps:', error);
+    }
   };
 
   return (
@@ -68,6 +94,19 @@ export default function Home() {
                 <div className="text-2xl font-bold text-blue-600">
                   {day.steps.toLocaleString()} steps
                 </div>
+                <div className="text-lg text-gray-600">
+          {(day.distance / 1000).toFixed(2)} km
+        </div>
+        {day.activities && day.activities.length > 0 && (
+            <div className="mt-2 text-sm text-gray-600">
+                <div className="font-medium">Activities:</div>
+                {day.activities.map((activity, index) => (
+                    <div key={index}>
+                        {getActivityName(activity.type)}: {activity.duration_minutes} minutes
+                    </div>
+                ))}
+            </div>
+        )}
               </div>
             ))}
           </div>
