@@ -10,21 +10,14 @@ const PerformanceChart = ({ performanceData }) => {
         labels: labels, // e.g., session dates or numbers
         datasets: [
             {
-                label: 'Pace',
+                label: 'Travel Metric',
                 data: paceData,
-                borderColor: 'rgba(75, 192, 192, 1)',
+                borderColor: '#5bacfe',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 tension: 0.4,
             },
             {
-                label: 'Modulation',
-                data: modulationData,
-                borderColor: 'rgba(153, 102, 255, 1)',
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                tension: 0.4,
-            },
-            {
-                label: 'Clarity',
+                label: 'Energy Metric',
                 data: clarityData,
                 borderColor: 'rgba(255, 159, 64, 1)',
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
@@ -62,11 +55,11 @@ const PerformanceChart = ({ performanceData }) => {
     };
 
     return (
-        
+
         <div className="w-full h-full border-2 rounded-md p-2 ">
             <Line data={data} options={options} />
         </div>
-        
+
     );
 };
 
