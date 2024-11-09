@@ -57,7 +57,7 @@ def get_steps():
     fitness = build('fitness', 'v1', credentials=credentials)
     
     end = datetime.now(timezone.utc)
-    start = end - timedelta(days=7)
+    start = end - timedelta(days=1)
     print("sup")
     body = {
         "aggregateBy": [{
