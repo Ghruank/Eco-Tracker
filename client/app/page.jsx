@@ -71,7 +71,7 @@ export default function Component() {
                 Greenit.
               </a>
               <div className="items-center hidden space-x-6 nav-links md:flex">
-                {["Login", "Signup"].map((button, index) => (
+                {["login", "signup"].map((button, index) => (
                   <a
                     key={index}
                     href={`/${button}`}
