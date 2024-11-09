@@ -1,15 +1,24 @@
-"use client";
+"use client"
 
-import React, { useEffect } from "react";
-import gsap from "gsap";
-import AOS from "aos";
-import "aos/dist/aos.css"; // Include AOS CSS
-import "./lp.css"
+import { useEffect } from "react"
+import { gsap } from "gsap"
+import AOS from "aos"
+import "aos/dist/aos.css"
+import { Inter, Poppins, Roboto_Slab, Dancing_Script } from 'next/font/google'
 
-const LandingPage = () => {
+const inter = Inter({ subsets: ['latin'] })
+const poppins = Poppins({ weight: ['300', '400', '600'], subsets: ['latin'] })
+const robotoSlab = Roboto_Slab({ subsets: ['latin'] })
+const dancingScript = Dancing_Script({ subsets: ['latin'] })
+
+function seededRandom(seed) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+export default function Component() {
   useEffect(() => {
-    // Initialize AOS
-    AOS.init();
+    AOS.init()
 
     // GSAP Animations
     gsap.from(".logo", {
@@ -17,165 +26,163 @@ const LandingPage = () => {
       y: -10,
       delay: 1,
       duration: 0.5,
-    });
-    gsap.from(".nav_menu_list .nav_menu_item", {
+    })
+
+    gsap.from(".nav-links a", {
       opacity: 0,
       y: -10,
       delay: 1.4,
       duration: 0.5,
-      stagger: 0.3,
-    });
-    gsap.from(".toggle_btn", {
-      opacity: 0,
-      y: -10,
-      delay: 1.4,
-      duration: 0.5,
-    });
-    gsap.from(".main-heading", {
+    })
+
+    gsap.from(".hero-content", {
       opacity: 0,
       y: 20,
       delay: 2.4,
       duration: 1,
-    });
-    gsap.from(".info-text", {
+    })
+
+    gsap.from(".hero-image", {
       opacity: 0,
-      y: 20,
-      delay: 2.8,
-      duration: 1,
-    });
-    gsap.from(".btn_wrapper", {
-      opacity: 0,
-      y: 20,
-      delay: 2.8,
-      duration: 1,
-    });
-    gsap.from(".team_img_wrapper img", {
-      opacity: 0,
-      y: 20,
+      scale: 0.8,
       delay: 3,
       duration: 1,
-    });
-  }, []);
+    })
 
-  const handleToggleMenu = () => {
-    document.getElementById("nav_menu").classList.add("show");
-  };
-
-  const handleCloseMenu = () => {
-    document.getElementById("nav_menu").classList.remove("show");
-  };
+    gsap.from(".floating-leaves", {
+      y: -20,
+      opacity: 0,
+      duration: 1,
+      delay: 3.5,
+      stagger: 0.2,
+    })
+  }, [])
 
   return (
-    <div className="landing">
-      {/* Header */}
-      <header className="container header">
-        <nav className="nav">
-          <div className="logo">
-            <h2>Greenit.</h2>
-          </div>
-
-          <div className="nav_menu" id="nav_menu">
-            <button className="close_btn" id="close_btn" onClick={handleCloseMenu}>
-              <i className="ri-close-fill"></i>
-            </button>
-
-            <ul className="nav_menu_list">
-              <li className="nav_menu_item">
-                <a href="#" className="nav_menu_link">button1</a>
-              </li>
-              <li className="nav_menu_item">
-                <a href="#" className="nav_menu_link">button2</a>
-              </li>
-              <li className="nav_menu_item">
-                <a href="#" className="nav_menu_link">button3</a>
-              </li>
-              <li className="nav_menu_item">
-                <a href="#" className="nav_menu_link">button4</a>
-              </li>
-            </ul>
-          </div>
-
-          <button className="toggle_btn" id="toggle_btn" onClick={handleToggleMenu}>
-            <i className="ri-menu-line"></i>
-          </button>
-        </nav>
-      </header>
-
-      {/* Main Section */}
-      <section className="wrapper">
-        <div className="container">
-          <div className="grid-cols-2">
-            <div className="grid-item-1">
-              <h1 className="main-heading">
-                Welcome to <span>Greenit.</span>
-                <br />
-                Here's your chance to make Earth a better place.
-              </h1>
-              <p className="info-text">Less Carbon. More Life</p>
-
-              <div className="btn_wrapper">
-                <button className="btn view_more_btn">
-                  Leads somewhere <i className="ri-arrow-right-line"></i>
-                </button>
-
-                <button className="btn documentation_btn">Leads somewhere</button>
+    <div className="min-h-screen bg-[#a4d88d] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b">
+          <div className="container mx-auto px-4 h-16">
+            <nav className="h-full flex items-center justify-between">
+              <a href="#" className={`${robotoSlab.className} logo text-3xl font-semibold text-green-600`}>
+                Greenit.
+              </a>
+              
+              <div className="nav-links hidden md:flex items-center space-x-6">
+                {['Button1', 'Button2', 'Button3', 'Button4'].map((button, index) => (
+                  <a key={index} href="#" className={`${poppins.className} text-gray-800 hover:text-green-700 transition-colors`}>
+                    {button}
+                  </a>
+                ))}
               </div>
-            </div>
-            <div className="grid-item-2">
-              <div className="team_img_wrapper">
-                <img src="/img/team.svg" alt="team-img" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="wrapper">
-        <div className="container" data-aos="fade-up" data-aos-duration="1000">
-          <div className="grid-cols-3">
-            <div className="grid-col-item">
-              <div className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <button className="md:hidden text-gray-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
-              </div>
-              <div className="featured_info">
-                <span className="title">CONTENT</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore ratione facilis animi voluptas exercitationem molestiae.</p>
-              </div>
-            </div>
-            <div className="grid-col-item">
-              <div className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="featured_info">
-                <span className="title">CONTENT</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut ipsum esse corrupti. Quo, labore debitis!</p>
-              </div>
-            </div>
+              </button>
+            </nav>
+          </div>
+        </header>
 
-            <div className="grid-col-item">
-              <div className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="hero-content space-y-6 z-10">
+                <h1 className={`${dancingScript.className} text-4xl md:text-5xl lg:text-6xl font-light leading-tight text-gray-800`}>
+                  Welcome to <span className="text-green-600">Greenit.</span>
+                  <br />
+                  Here&apos;s your chance to making Earth a better place.
+                </h1>
+                <p className={`${poppins.className} text-xl text-green-700`}>Less Carbon. More Life</p>
+                <div className="flex flex-wrap gap-4">
+                  <button className={`${inter.className} px-6 py-3 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700 transition-colors`}>
+                    Leads Somewhere
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <button className={`${inter.className} px-6 py-3 bg-gray-100 text-green-600 rounded-lg hover:bg-gray-200 transition-colors`}>
+                    Leads Somewhere
+                  </button>
+                </div>
               </div>
-              <div className="featured_info">
-                <span className="title">CONTENT</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non nostrum voluptate totam ipsa corrupti vero!</p>
+              <div className="hero-image-container relative">
+                <div className="hero-image overflow-hidden rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                  <img
+                    src="/Screenshot 2024-11-09 204357.png"
+                    alt="Team illustration"
+                    className="w-full h-auto"
+                  />
+                </div>
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`floating-leaves absolute w-8 h-8 bg-green-400 rounded-full opacity-50 animate-float-${i + 1}`}
+                    style={{
+                      top: `${seededRandom(i * 1) * 100}%`,
+                      left: `${seededRandom(i * 2) * 100}%`,
+                      animationDelay: `${i * 0.5}s`,
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Footer */}
-      <footer></footer>
+          <div className="container mx-auto px-4 mt-24">
+            <div className="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-duration="1000">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className={`${poppins.className} text-xl font-semibold mb-2`}>CONTENT</h3>
+                  <p className={`${inter.className} text-gray-700`}>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore ratione facilis animi voluptas
+                    exercitationem molestiae.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+
+        <footer className="bg-green-600 h-3" />
+      </div>
     </div>
-  );
-};
-
-export default LandingPage;
+  )
+}
