@@ -56,7 +56,7 @@ def get_steps():
     
     fitness = build('fitness', 'v1', credentials=credentials)
     
-    end = datetime.now(timezone.utc)
+    end = datetime.now(timezone.utc) 
     start = end - timedelta(days=7)
     print("sup")
     body = {
