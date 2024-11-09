@@ -4,14 +4,19 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Not recommended for production! Use environment variables instead
-CLIENT_ID = "735138885304-6eisslg64ht4dj528qa5ohs7ooti7fob.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
+# # Not recommended for production! Use environment variables instead
+# CLIENT_ID = "CLIENT_ID"
+# CLIENT_SECRET = "CLIENT_SECRET"
+load_dotenv()
 
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 CLIENT_CONFIG = {
     "web": {
         "client_id": CLIENT_ID,
