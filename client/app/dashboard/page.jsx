@@ -1,107 +1,144 @@
-// "use client";
-// import Sidebar from "./sidebar";
-// import PerformanceChart from "./PerformanceChart";
-// import PerformanceMetrics from "./Scores";
+'use client';
 
-// export default function Dashboard() {
+import React, { useState } from 'react';
+import { Leaf, Award, Gauge, Plane, BatteryCharging } from 'lucide-react';
+import { Bar, XAxis, YAxis, Tooltip, BarChart, ResponsiveContainer } from 'recharts';
 
-
-   
-//     // Sample performance data (in a real app, this would come from your backend)
-//     const performanceData = {
-//         labels: ['Session 1', 'Session 2', 'Session 3', 'Session 4', 'Session 5'], // x-axis labels
-//         paceData: [70, 75, 78, 82, 85], // Pace scores for each session
-//         modulationData: [65, 68, 72, 76, 79], // Modulation scores
-//         clarityData: [80, 82, 85, 88, 90], // Clarity scores
-//     };
-
-    
-    
-//     const scores = {
-//         pace: 80,
-//         modulation: 65,
-//         clarity: 75,
-//     };
-
-//     return (
-//         <div className="w-full h-screen bg-black">
-//             <Sidebar />
-//             <div className="flex w-full ">
-//                 <div className="w-full h-full mt-16">
-//                     <div className="flex flex-col mt-4 md:flex-row "> {/* Stack vertically on small screens, horizontally on medium and larger screens */}
-//                         <div className="w-full px-2 pb-2 md:w-2/3"> {/* Full width on smaller screens */}
-//                             <PerformanceChart performanceData={performanceData} />
-//                         </div>
-//                         <div className="flex-1  px-2 md: mt-4 md:mt-0"> {/* Add margin on larger screens */}
-//                             <PerformanceMetrics scores={scores} />
-//                         </div>
-                        
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-"use client";
-import Sidebar from "./sidebar";
-import { Award } from "lucide-react";
-
-
-import EcoPointsHistogram from "./EcoPoints";
+const Sidebar = () => (
+  <div className="fixed left-0 top-0 h-full w-16 bg-green-800 text-white flex flex-col items-center py-4 space-y-8 hover:w-48 transition-all duration-300">
+    <div className="flex items-center space-x-2">
+      <Leaf className="w-8 h-8" />
+      <span className="hidden group-hover:inline-block">Greenit</span>
+    </div>
+    <div className="flex items-center space-x-2">
+      <Gauge className="w-6 h-6" />
+      <span className="hidden group-hover:inline-block">Dashboard</span>
+    </div>
+    <div className="flex items-center space-x-2">
+      <Plane className="w-6 h-6" />
+      <span className="hidden group-hover:inline-block">Travel</span>
+    </div>
+    <div className="flex items-center space-x-2">
+      <BatteryCharging className="w-6 h-6" />
+      <span className="hidden group-hover:inline-block">Energy</span>
+    </div>
+  </div>
+);
 
 const PerformanceMetrics = ({ coins }) => (
-    <div className="bg-white rounded-lg shadow-lg p-6 text-green-800">
-      <h2 className="text-2xl font-bold mb-4 flex items-center">
-        <Award className="mr-2" /> Eco Coins
-      </h2>
-      <div className="text-4xl font-bold">{coins}</div>
-      <p className="mt-2 text-sm">Keep up the great work!</p>
-    </div>
-  )
-
-  const EcoTip = ({ tip }) => (
-    <div className="bg-green-100 rounded-lg p-4 text-green-800 mt-4">
-      <h3 className="font-bold mb-2">Eco Tip of the Day</h3>
-      <p>{tip}</p>
-    </div>
-  )
-
-
-export default function Dashboard() {
-    // Sample performance data (in a real app, this would come from your backend)
-    
-    const coins=256;
-
-    const generateUsers = (count = 50) => {
-        return Array.from({ length: count }, (_, i) => ({
-          id: i + 1,
-          ecoPoints: Math.floor(Math.random() * 101), // Generates a random ecoPoints value between 0 and 100
-        }));
-      };
-
-      const users = generateUsers(50);
-
-      const userEcoPoints = 15;
-
-    return (
-        <div className="w-full h-screen" style={{ backgroundColor: '#ffffff' }}> {/* lightest green background */}
-            <Sidebar />
-            <div className="flex w-full ">
-                <div className="w-full h-full mt-20">
-                    <div className="flex flex-col mt-4 md:flex-row ">
-                    <div className="w-full px-2 pb-2 border-2 rounded-md border-gray-800 mx-2 md:w-2/3">
-  <div className="w-4/4 h-full mx-auto"> {/* Set the width to 3/4 of the container and increase the height */}
-    <EcoPointsHistogram users={users} userEcoPoints={userEcoPoints} />
+  <div className="bg-white rounded-lg shadow-lg p-6 text-green-800">
+    <h2 className="text-2xl font-bold mb-4 flex items-center">
+      <Award className="mr-2" /> Eco Coins
+    </h2>
+    <div className="text-4xl font-bold">{coins}</div>
+    <p className="mt-2 text-sm">Keep up the great work!</p>
   </div>
-</div>
-                        <div className="flex-1 px-2 mt-12 md:mt-0 " style={{ backgroundColor: '#ffffff', color: '#0b3822' }}> {/* Lighter green */}
-                        <PerformanceMetrics coins={coins} />
-                        <EcoTip tip="Using a reusable water bottle can save up to 1,460 plastic bottles per year!" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+);
+
+const EcoPointsHistogram = ({ users, userEcoPoints }) => {
+  const data = [
+    { range: '0-20', count: users.filter(u => u.ecoPoints >= 0 && u.ecoPoints <= 20).length },
+    { range: '21-40', count: users.filter(u => u.ecoPoints > 20 && u.ecoPoints <= 40).length },
+    { range: '41-60', count: users.filter(u => u.ecoPoints > 40 && u.ecoPoints <= 60).length },
+    { range: '61-80', count: users.filter(u => u.ecoPoints > 60 && u.ecoPoints <= 80).length },
+    { range: '81-100', count: users.filter(u => u.ecoPoints > 80 && u.ecoPoints <= 100).length },
+  ];
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="w-full h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <XAxis dataKey="range" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="count" fill="#22c55e" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="mt-4 text-center text-green-800">
+        Your Eco Points: <span className="font-bold">{userEcoPoints}</span>
+      </div>
+    </div>
+  );
+};
+
+const EcoTip = ({ tip }) => (
+  <div className="bg-green-100 rounded-lg p-4 text-green-800 mt-4">
+    <h3 className="font-bold mb-2">Eco Tip of the Day</h3>
+    <p>{tip}</p>
+  </div>
+);
+
+const ActionItem = ({ title, description, completed, onToggle }) => (
+  <div className="flex items-center justify-between bg-white rounded-lg p-4 mb-2 shadow">
+    <div>
+      <h3 className="font-bold text-green-800">{title}</h3>
+      <p className="text-sm text-green-600">{description}</p>
+    </div>
+    <button
+      onClick={onToggle}
+      className={`px-4 py-2 rounded-full ${
+        completed ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800'
+      }`}
+    >
+      {completed ? 'Completed' : 'Mark Complete'}
+    </button>
+  </div>
+);
+
+const Dashboard = () => {
+  const [coins, setCoins] = useState(256);
+  const [actionItems, setActionItems] = useState([
+    { id: 1, title: 'Recycle Paper', description: 'Recycle 5 sheets of paper', completed: false },
+    { id: 2, title: 'Save Energy', description: 'Turn off lights for 1 hour', completed: false },
+    { id: 3, title: 'Reduce Water Usage', description: 'Take a 5-minute shower', completed: false },
+  ]);
+
+  const generateUsers = (count = 50) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i + 1,
+      ecoPoints: Math.floor(Math.random() * 101),
+    }));
+  };
+
+  const users = generateUsers(50);
+  const userEcoPoints = 75;
+
+  const toggleActionItem = (id) => {
+    setActionItems(actionItems.map(item => 
+      item.id === id ? { ...item, completed: !item.completed } : item
+    ));
+    setCoins(prevCoins => prevCoins + 10); // Award 10 coins for completing an action
+  };
+
+  return (
+    <div className="min-h-screen bg-green-50 text-green-900">
+      <Sidebar />
+      <div className="ml-16 p-8">
+        <h1 className="text-4xl font-bold mb-8 text-green-800">Eco Dashboard</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2">
+            <EcoPointsHistogram users={users} userEcoPoints={userEcoPoints} />
+          </div>
+          <div>
+            <PerformanceMetrics coins={coins} />
+            <EcoTip tip="Using a reusable water bottle can save up to 1,460 plastic bottles per year!" />
+          </div>
         </div>
-    );
-}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4 text-green-800">Today's Eco Actions</h2>
+          {actionItems.map(item => (
+            <ActionItem
+              key={item.id}
+              {...item}
+              onToggle={() => toggleActionItem(item.id)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
