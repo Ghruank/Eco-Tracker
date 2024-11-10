@@ -4,9 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Leaf } from 'lucide-react';
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
 
 const SustainableSignUp = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "", confirmPassword: "" });
@@ -53,103 +50,103 @@ const SustainableSignUp = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleGoogleLoginSuccess = (response) => {
-    console.log("Google login successful!", response);
-    // You could send the response token to your backend for further verification or processing.
-  };
-
-  const handleGoogleLoginFailure = (error) => {
-    console.error("Google login failed:", error);
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/login');
+      const data = await response.json();
+      
+      // Store the auth URL in localStorage to identify this is a Google signup flow
+      localStorage.setItem('isGoogleSignup', 'true');
+      window.location.href = data.url;
+    } catch (error) {
+      setError("Failed to initialize Google Sign In");
+    }
   };
 
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div className="flex items-center justify-center min-h-screen px-4 bg-green-50 dark:bg-green-900">
-        <div className="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-green-800 p-6 space-y-6">
-          <div className="space-y-2">
-            <div className="flex items-center justify-center">
-              <Leaf className="h-12 w-12 text-green-600 dark:text-green-400" />
-            </div>
-            <h2 className="text-2xl font-bold text-center text-green-800 dark:text-green-100">
-              Lesgooo Sign Up
-            </h2>
-            <p className="text-center text-green-600 dark:text-green-300">
-              Join our eco-friendly community
-            </p>
+    <div className="flex items-center justify-center min-h-screen px-4 bg-green-50 dark:bg-green-900">
+      <div className="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-green-800 p-6 space-y-6">
+        <div className="space-y-2">
+          <div className="flex items-center justify-center">
+            <Leaf className="h-12 w-12 text-green-600 dark:text-green-400" />
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-green-700 dark:text-green-200">
-                Your email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="name@ecofriendly.com"
-                required
-                onChange={onChange}
-                value={credentials.email}
-                className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-green-700 dark:text-green-200">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="••••••••"
-                required
-                onChange={onChange}
-                value={credentials.password}
-                className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-green-700 dark:text-green-200">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder="••••••••"
-                required
-                onChange={onChange}
-                value={credentials.confirmPassword}
-                className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-500 dark:hover:bg-green-600"
-            >
-              Sign Up
-            </button>
-          </form>
-          <div className="mt-4">
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={handleGoogleLoginFailure}
-              text="signin_with"
-              shape="pill"
-              width="300"
-              theme="outline"
-            />
-          </div>
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-          <p className="text-sm text-center text-green-600 dark:text-green-300">
-            Already have an account?{" "}
-            <Link href="/login" className="font-medium text-green-800 hover:underline dark:text-green-200">
-              Login to your eco-account
-            </Link>
+          <h2 className="text-2xl font-bold text-center text-green-800 dark:text-green-100">
+            Lesgooo Sign Up
+          </h2>
+          <p className="text-center text-green-600 dark:text-green-300">
+            Join our eco-friendly community
           </p>
         </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-green-700 dark:text-green-200">
+              Your email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="name@ecofriendly.com"
+              required
+              onChange={onChange}
+              value={credentials.email}
+              className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-green-700 dark:text-green-200">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              required
+              onChange={onChange}
+              value={credentials.password}
+              className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-green-700 dark:text-green-200">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="••••••••"
+              required
+              onChange={onChange}
+              value={credentials.confirmPassword}
+              className="w-full px-3 py-2 border border-green-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:border-green-600 dark:bg-green-700 dark:text-white"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-500 dark:hover:bg-green-600"
+          >
+            Sign Up
+          </button>
+        </form>
+        <div className="mt-4">
+          <button
+            onClick={handleGoogleSignIn}
+            className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Sign in with Google
+          </button>
+        </div>
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        <p className="text-sm text-center text-green-600 dark:text-green-300">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-green-800 hover:underline dark:text-green-200">
+            Login to your eco-account
+          </Link>
+        </p>
       </div>
-    </GoogleOAuthProvider>
+    </div>
   );
 };
 

@@ -7,35 +7,17 @@ export default function Home() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const fitnessData = localStorage.getItem('fitnessData');
+    
     if (token) {
       setIsLoggedIn(true);
-      fetchSteps(token);
+      if (fitnessData) {
+        setSteps(JSON.parse(fitnessData));
+      } else {
+        fetchSteps(token);
+      }
     }
   }, []);
-
-  const login = async () => {
-    const response = await fetch('http://localhost:5000/login');
-    const data = await response.json();
-    window.location.href = data.url;
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setSteps([]);
-  };
-  const getActivityName = (activityType) => {
-    const activities = {
-        7: 'Walking',
-        8: 'Running',
-        1: 'Biking',
-        3: 'Still (not moving)',
-        4: 'Unknown',
-        9: 'In vehicle',
-        // Add more activity types as needed
-    };
-    return activities[activityType] || 'Unknown';
-  };  
 
   const fetchSteps = async (token) => {
     try {
@@ -56,10 +38,38 @@ export default function Home() {
       }
       
       setSteps(data);
+      localStorage.setItem('fitnessData', JSON.stringify(data));
     } catch (error) {
       console.error('Error fetching steps:', error);
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('fitnessData');
+    localStorage.removeItem('isGoogleSignup');
+    setIsLoggedIn(false);
+    setSteps([]);
+  };
+
+  const login = async () => {
+    const response = await fetch('http://localhost:5000/login');
+    const data = await response.json();
+    window.location.href = data.url;
+  };
+
+  const getActivityName = (activityType) => {
+    const activities = {
+        7: 'Walking',
+        8: 'Running',
+        1: 'Biking',
+        3: 'Still (not moving)',
+        4: 'Unknown',
+        9: 'In vehicle',
+        // Add more activity types as needed
+    };
+    return activities[activityType] || 'Unknown';
+  };  
 
   return (
     <div className="p-8">
