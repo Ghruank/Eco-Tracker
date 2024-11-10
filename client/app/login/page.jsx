@@ -94,6 +94,14 @@ export default function SustainableLogin() {
           >
             Login
           </button>
+
+          <button
+            type="submit"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white dark:bg-green-600 dark:hover:bg-green-600"
+          >
+            Login using google
+          </button>
+
         </form>
         <p className="text-sm text-center text-green-600 dark:text-green-300">
           Don't have an account yet?{' '}
