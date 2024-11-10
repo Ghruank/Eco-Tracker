@@ -7,6 +7,13 @@ const PerformanceMetrics = ({ coins }) => {
     const componentBorder = '#35a249';    // Dark green border for contrast
     const textPrimaryColor = '#35a249';   // Darker green text for titles and labels
 
+    const EcoTip = ({ tip }) => (
+        <div className="bg-green-100 rounded-lg p-4 text-green-800 mt-4">
+          <h3 className="font-bold mb-2">Eco Tip of the Day</h3>
+          <p>{tip}</p>
+        </div>
+      )
+
     return (
         <div className="flex flex-col w-full gap-5">
             {/* Pace Metric Box */}
@@ -26,10 +33,9 @@ const PerformanceMetrics = ({ coins }) => {
                         </span>
                     </div>
                 </div>
-                <div className="text-sm mt-6">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam sed, omnis ratione ad minus animi voluptates vitae ducimus sapiente assumenda cum tempora aliquam repellat quisquam velit adipisci odio quam perferendis rerum nulla incidunt ea. Molestias ut quo labore consequatur officia perferendis rem perspiciatis, sint quidem nobis beatae esse molestiae similique.
-                </div>
+                
             </div>
+            
         </div>
     );
 };

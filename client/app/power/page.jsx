@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react'
 import { Camera, Leaf, Users, Zap, Upload, RefreshCw } from 'lucide-react'
+import Sidebar from '../dashboard/sidebar'
 
 export default function EcoFriendlyEnergyTracker() {
   const videoRef = useRef(null)
@@ -104,7 +105,7 @@ export default function EcoFriendlyEnergyTracker() {
                   onClick={captureImage}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                 >
-                  Capture Image
+                  <Camera className="h-8 w-8" />
                 </button>
               ) : (
                 <button
@@ -112,14 +113,14 @@ export default function EcoFriendlyEnergyTracker() {
                   onClick={retakePhoto}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                 >
-                  <RefreshCw className="inline-block mr-2" size={18} />
-                  Retake Photo
+                  <RefreshCw className="inline-block mr-2" size={28} />
+                  
                 </button>
               )}
               <label id="upload-label" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer">
                 <input id="file-upload" type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
-                <Upload className="inline-block mr-2" size={18} />
-                Upload Image
+                <Upload className="inline-block " size={28} />
+                
               </label>
             </div>
           </div>
@@ -249,6 +250,7 @@ export default function EcoFriendlyEnergyTracker() {
 
   return (
     <div id="eco-tracker" className="min-h-screen bg-green-50 flex flex-col">
+        <Sidebar  />
       <div id="content-container" className="flex-grow overflow-y-auto">
         <div className="max-w-3xl mx-auto p-4">
           <div id="header" className="flex items-center justify-center mb-6">
@@ -301,6 +303,6 @@ export default function EcoFriendlyEnergyTracker() {
         </div>
       </div>
       </div>
-    </div>
+    
   )
 }
