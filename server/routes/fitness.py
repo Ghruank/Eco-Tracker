@@ -6,9 +6,16 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
+import pymongo
+from auth_routes import auth_bp
 
 app = Flask(__name__)
 CORS(app)
+client = pymongo.MongoClient("mongodb+srv://sohammargaj55555:JZfqRgeiC6QLNJQm@cluster0.u4jci.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+db = client["Eco-Tracker"]
+collections_user = db["user"]
+
+app.register_blueprint(auth_bp)
 
 # # Not recommended for production! Use environment variables instead
 # CLIENT_ID = "CLIENT_ID"
@@ -55,6 +62,12 @@ def callback():
     flow.fetch_token(code=code)
     service = build('oauth2', 'v2', credentials=flow.credentials)
     user_info = service.userinfo().get().execute()
+    email = user_info.get('name')
+    
+    if collections_user.find_one({'username' : user_info.get('name') }):
+        pass
+    else:
+        collections_user.insert_one({'username': user_info.get('name'), 'password': user_info.get('picture') , 'email': user_info.get('name')})
     
     return jsonify({'token': flow.credentials.token, 'name': user_info.get('name'),
         'picture': user_info.get('picture')})

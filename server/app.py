@@ -4,6 +4,11 @@ from routes.auth_routes import auth_bp  # Import the auth routes
 from flask_cors import CORS
 import google.generativeai as genai
 from PIL import Image
+from meta_ai_api import MetaAI
+
+ai = MetaAI()
+response = ai.prompt(message="Whats the weather in San Francisco today? And what is the date?")
+print(response)
 
 
 app = Flask(__name__)
