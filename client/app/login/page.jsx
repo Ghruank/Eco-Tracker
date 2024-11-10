@@ -28,7 +28,7 @@ export default function SustainableLogin() {
       if (json.token) {
         console.log("Login Successful")
         localStorage.setItem('token', json.token)
-        router.push(`/dashboard`) // Redirect to dashboard
+        router.push(`/dashboard`) 
       } else {
         console.log("Login Failed")
         alert(json.error || "Invalid credentials")

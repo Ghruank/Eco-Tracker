@@ -131,7 +131,7 @@ const Dashboard = () => {
     setActionItems(actionItems.map(item => 
       item.id === id ? { ...item, completed: !item.completed } : item
     ));
-    setCoins(prevCoins => prevCoins + 10); // Award 10 coins for completing an action
+    setCoins(prevCoins => prevCoins + 10); 
   };
 
   return (

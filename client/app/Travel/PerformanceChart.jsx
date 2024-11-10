@@ -7,7 +7,7 @@ const PerformanceChart = ({ performanceData }) => {
     const { labels, paceData, modulationData, clarityData } = performanceData;
 
     const data = {
-        labels: labels, // e.g., session dates or numbers
+        labels: labels, 
         datasets: [
             {
                 label: 'Travel Metric',
