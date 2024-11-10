@@ -6,6 +6,7 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
+from meta_ai_api import MetaAI
 
 app = Flask(__name__)
 CORS(app)
@@ -154,6 +155,44 @@ def get_steps():
         print(f"Error in get_steps: {e}")
         return jsonify({'error': str(e)}), 500
 
+ai = MetaAI()
+
+@app.route('/ai/suggestions', methods=['POST'])
+def get_eco_suggestions():
+    try:
+        print("hi")  # Debug print
+        # Extract data from request
+        data = request.json
+        steps_data = data.get('stepsData', {})
+        weekly_avg = data.get('weeklyAverage', {})
+        
+        # Construct the prompt
+        message = (
+            f"As an eco-conscious AI assistant, analyze this user's activity data and provide feedback. "
+            f"The user walks {weekly_avg.get('avgSteps', 0)} steps on average per day, "
+            f"covering {weekly_avg.get('avgDistance', 0)} km. "
+            f"Today they walked {steps_data.get('todaySteps', 0)} steps. "
+            f"Without any intro or additional formatting, give me 3 specific, actionable, and encouraging suggestions "
+            f"about how they can improve their eco-friendly behavior based on their walking patterns. "
+            f"Focus on reducing carbon footprint. Keep it conversational and positive. "
+            f"Include one specific statistic about environmental impact. "
+            f"No introductions or conclusions, just the direct suggestions in a paragraph format."
+        )
+        print(message)
+
+        # Get response from Meta AI
+        response = ai.prompt(message=message)
+        suggestions = response.get("message", "Unable to generate suggestions at this time.")
+        
+        print("AI Suggestions:", suggestions)
+        return jsonify({"message": suggestions})
+
+    except Exception as e:
+        print(f"Error getting eco suggestions: {str(e)}")
+        return jsonify({
+            'error': 'Failed to get eco suggestions'
+        }), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)
+

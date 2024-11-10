@@ -300,6 +300,7 @@ export default function EcoFriendlyEnergyTracker() {
           )}
         </div>
       </div>
+      </div>
     </div>
   )
 }
