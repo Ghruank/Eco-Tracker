@@ -233,15 +233,18 @@ def power():
     # For example, pass it to a pre-trained ML model for prediction
   # Replace with actual model inference
     if collections_user.find_one({'username' : uid }):
-        data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
         collections_user.update_one(
             {'username': uid},
             {'$push': {'statistics': {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result": result.text}}}
         )
 
     
+    data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
+    response = ai.prompt(message=f"{data} \n\ni am making an eco friendly lifestyle tracking web app it is an ai driven app that tracks the users activities and suddest them ecofriendly measures one of the features of my app is to give advice about how to reduce your energy consumption by analysing the amount of electricity which is mentioned in the result in energy it also take in information like month, no. of residents in the users family/household 'appliance' has all the electronic  appliences that are used by the users with the numbers of hours it is being used daily give me an advice on the user behaviour and advise him on what factors he can improve in his day to day lifestylemake it 10 to 12 lines make it short and concise also just give me the advice, i want no introductions")
+    print(response)
 
-    return ({'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text})
+
+    return jsonify(response)
 
 
 

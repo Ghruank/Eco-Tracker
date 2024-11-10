@@ -288,7 +288,7 @@ export default function EcoFriendlyEnergyTracker() {
         alert("Failed to submit data. Please try again.");
       }
       const data = await response.json(); // Await the resolved JSON data
-      console.log(data);
+      console.log(data.message);
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("An error occurred. Please try again.");
