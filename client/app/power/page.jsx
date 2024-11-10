@@ -3,6 +3,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Camera, Leaf, Users, Zap, Upload, RefreshCw } from "lucide-react";
 
+import {  Award, Gauge, Plane, BatteryCharging } from 'lucide-react';
+import { Bar, XAxis, YAxis, Tooltip, BarChart, ResponsiveContainer } from 'recharts';
+import Link from 'next/link';
+
 export default function EcoFriendlyEnergyTracker() {
   const videoRef = useRef(null);
   const [activeStep, setActiveStep] = useState(1);
@@ -11,6 +15,48 @@ export default function EcoFriendlyEnergyTracker() {
   const [usesEV, setUsesEV] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+
+  const Sidebar = () => (
+    <div className="fixed left-0 top-0 h-full w-16 hover:w-48 bg-green-800 text-white transition-all duration-300">
+      <div className="flex flex-col items-center py-4 space-y-8">
+        <div className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Leaf className="w-8 h-8" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300">Greenit</span>
+          </div>
+        </div>
+        
+        <Link href="/dashboard" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Gauge className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Dashboard</span>
+          </div>
+        </Link>
+  
+        <Link href="/Travel" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Plane className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Travel</span>
+          </div>
+        </Link>
+  
+        <Link href="/energy" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <BatteryCharging className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Energy</span>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
 
   const applianceList = [
     "AC",

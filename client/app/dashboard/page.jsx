@@ -3,27 +3,49 @@
 import React, { useState } from 'react';
 import { Leaf, Award, Gauge, Plane, BatteryCharging } from 'lucide-react';
 import { Bar, XAxis, YAxis, Tooltip, BarChart, ResponsiveContainer } from 'recharts';
+import Link from 'next/link';
 
 const Sidebar = () => (
-  <div className="fixed left-0 top-0 h-full w-16 bg-green-800 text-white flex flex-col items-center py-4 space-y-8 hover:w-48 transition-all duration-300">
-    <div className="flex items-center space-x-2">
-      <Leaf className="w-8 h-8" />
-      <span className="hidden group-hover:inline-block">Greenit</span>
+    <div className="fixed left-0 top-0 h-full w-16 hover:w-48 bg-green-800 text-white transition-all duration-300">
+      <div className="flex flex-col items-center py-4 space-y-8">
+        <div className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Leaf className="w-8 h-8" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300">Greenit</span>
+          </div>
+        </div>
+        
+        <Link href="/dashboard" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Gauge className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Dashboard</span>
+          </div>
+        </Link>
+  
+        <Link href="/Travel" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Plane className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Travel</span>
+          </div>
+        </Link>
+  
+        <Link href="/power" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <BatteryCharging className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Energy</span>
+          </div>
+        </Link>
+      </div>
     </div>
-    <div className="flex items-center space-x-2">
-      <Gauge className="w-6 h-6" />
-      <span className="hidden group-hover:inline-block">Dashboard</span>
-    </div>
-    <div className="flex items-center space-x-2">
-      <Plane className="w-6 h-6" />
-      <span className="hidden group-hover:inline-block">Travel</span>
-    </div>
-    <div className="flex items-center space-x-2">
-      <BatteryCharging className="w-6 h-6" />
-      <span className="hidden group-hover:inline-block">Energy</span>
-    </div>
-  </div>
-);
+  );
 
 const PerformanceMetrics = ({ coins }) => (
   <div className="bg-white rounded-lg shadow-lg p-6 text-green-800">
@@ -116,7 +138,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-green-50 text-green-900">
       <Sidebar />
       <div className="ml-16 p-8">
-        <h1 className="text-4xl font-bold mb-8 text-green-800">Eco Dashboard</h1>
+        <h1 className="text-4xl font-bold mb-8 text-green-800">Green</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <EcoPointsHistogram users={users} userEcoPoints={userEcoPoints} />
