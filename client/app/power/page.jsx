@@ -12,7 +12,7 @@ export default function EcoFriendlyEnergyTracker() {
   const [cameraActive, setCameraActive] = useState(false)
   const [capturedImage, setCapturedImage] = useState(null)
 
-  const applianceList = ['AC', 'Heater', 'Microwave', 'Fridge', 'Geyser', 'Oven', 'Iron']
+  const applianceList = ['AC', 'Heater', 'Microwave', 'Refrigerator', 'Geyser','Washing Machine','Kettle', 'Oven', 'Iron','Blender', 'Television', 'PC', ]
 
   useEffect(() => {
     if (activeStep === 1) {
