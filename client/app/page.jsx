@@ -120,7 +120,7 @@ export default function Component() {
                   <button
                     className={`${inter.className} px-6 py-3 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700 transition-colors`}
                   >
-                    Leads Somewhere
+                    Leads Somewhere Green
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-5 h-5"
@@ -134,11 +134,7 @@ export default function Component() {
                       />
                     </svg>
                   </button>
-                  <button
-                    className={`${inter.className} px-6 py-3 bg-gray-100 text-green-600 rounded-lg hover:bg-gray-200 transition-colors`}
-                  >
-                    Leads Somewhere
-                  </button>
+                  
                 </div>
               </div>
               <div className="relative hero-image-container">
@@ -172,9 +168,9 @@ export default function Component() {
               data-aos="fade-up"
               data-aos-duration="1000"
             >
-              {[1, 2, 3].map((i) => (
+              
                 <div
-                  key={i}
+                  
                   className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm hover:shadow-md"
                 >
                   <div className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-lg">
@@ -194,17 +190,73 @@ export default function Component() {
                     </svg>
                   </div>
                   <h3
-                    className={`${poppins.className} text-xl font-semibold mb-2`}
+                    className={`${poppins.className} text-gray-600 text-xl font-semibold mb-2`}
                   >
-                    CONTENT
+                    Activity Tracking
                   </h3>
                   <p className={`${inter.className} text-gray-700`}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Tempore ratione facilis animi voluptas exercitationem
-                    molestiae.
+                  GreenIt has an integrated environment for Google Fit, from which it will get the user's footstep count and the distance travelled. Our webapp enhances this by having an automatic transportation mode detection. 
                   </p>
                 </div>
-              ))}
+                <div
+                  
+                  className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm hover:shadow-md"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-lg">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <h3
+                    className={`${poppins.className} text-gray-600 text-xl font-semibold mb-2`}
+                  >
+                    Bill Analysis
+                  </h3>
+                  <p className={`${inter.className} text-gray-700`}>
+                  Our app has an inbuilt OCR powered bill scanning environment. It will scan the electricity bills and present the energy consumption, and has an AI driven usage pattern analysis.
+                  </p>
+                </div>
+                <div
+                  
+                  className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm hover:shadow-md"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-lg">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <h3
+                    className={`${poppins.className} text-gray-600 text-xl font-semibold mb-2`}
+                  >
+                   Recommendations
+                  </h3>
+                  <p className={`${inter.className} text-gray-700`}>
+                  This will analyse all the environments and give personalised suggestions based on user behaviour. It will also give a predictive analysis for future impact.
+                  </p>
+                </div>
+             
             </div>
           </div>
         </main>

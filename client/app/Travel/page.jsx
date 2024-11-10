@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 import PerformanceChart from '../dashboard/PerformanceChart';
 import { CloudCog } from 'lucide-react';
 import Sidebar from '../dashboard/sidebar';
+import React from 'react';
+import { Leaf, Award, Gauge, Plane, BatteryCharging } from 'lucide-react';
+import { Bar, XAxis, YAxis, Tooltip, BarChart, ResponsiveContainer } from 'recharts';
+import Link from 'next/link';
+
 export default function Home() {
   const [steps, setSteps] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -149,6 +154,48 @@ export default function Home() {
     paceData: getLast7Days(steps).map(day => day.steps),
   };
 
+  const Sidebar = () => (
+    <div className="fixed left-0 top-0 h-full w-16 hover:w-48 bg-green-800 text-white transition-all duration-300">
+      <div className="flex flex-col items-center py-4 space-y-8">
+        <div className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Leaf className="w-8 h-8" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300">Greenit</span>
+          </div>
+        </div>
+        
+        <Link href="/dashboard" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Gauge className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Dashboard</span>
+          </div>
+        </Link>
+  
+        <Link href="/Travel" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <Plane className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Travel</span>
+          </div>
+        </Link>
+  
+        <Link href="/power" className="w-full px-4">
+          <div className="flex items-center">
+            <div className="w-8 flex-shrink-0">
+              <BatteryCharging className="w-6 h-6" />
+            </div>
+            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Energy</span>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
+
   const getEcoSuggestions = async () => {
     setIsLoadingSuggestions(true);
     try {
@@ -209,27 +256,17 @@ export default function Home() {
   }, [isLoadingSuggestions]);
 
   return (
-    <div>
+    <div >
  <Sidebar/>
     <div className="p-8 bg-white">
-     
+    <h1 className="ml-24 text-4xl font-bold text-gray-700">Step Counter</h1>
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Step Counter</h1>
+          
           
           {isLoggedIn ? (
             <div className="relative profile-dropdown">
-              <div 
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => setShowDropdown(!showDropdown)}
-              >
-                <span className="text-gray-700">{user?.name || 'User'}</span>
-                <img
-                  src={user?.picture || 'https://via.placeholder.com/40'}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-                />
-              </div>
+              
 
               {/* Dropdown Menu */}
               {showDropdown && (
@@ -330,7 +367,7 @@ export default function Home() {
               </div>
             ) : (
               <p className="text-gray-500">
-                Loading your personalized eco-friendly suggestions...
+                You're making great strides! Walking 5000 steps daily reduces your carbon footprint by 240 kg of CO2 per year - equivalent to planting 12 trees. To boost your impact, try walking for local errands within 2 km instead of driving, consider car-sharing or bike-sharing services for longer trips, and offset any missed step goals with home energy-saving habits like using efficient light bulbs and turning off standby appliances.
               </p>
             )}
           </div>
