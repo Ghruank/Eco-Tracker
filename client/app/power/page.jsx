@@ -273,24 +273,31 @@ export default function EcoFriendlyEnergyTracker() {
     }
 
     // Append appliances data
+    console.log(appliances);
     formData.append("appliances", JSON.stringify(appliances));
 
     // Append household info
+    console.log(residents);
+    console.log(usesEV);
     formData.append("residents", residents);
     formData.append("usesEV", usesEV);
-
+    if (localStorage.getItem("userName")) {
+      formData.append("userID", localStorage.getItem("userName"));
+    }
     try {
-      const response = await fetch("/api/submit-energy-data", {
+      const response = await fetch("http://127.0.0.1:5000/ocr/power", {
         method: "POST",
         body: formData,
       });
 
-      if (response.ok) {
+      if (response) {
         alert("Data submitted successfully!");
         // Reset form or redirect user as needed
       } else {
         alert("Failed to submit data. Please try again.");
       }
+      const data = await response.json(); // Await the resolved JSON data
+      console.log(data);
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("An error occurred. Please try again.");

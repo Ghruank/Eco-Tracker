@@ -9,9 +9,11 @@ import os
 import pymongo
 from auth_routes import auth_bp
 from meta_ai_api import MetaAI
+import google.generativeai as genai
+from PIL import Image
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])
 client = pymongo.MongoClient("mongodb+srv://sohammargaj55555:JZfqRgeiC6QLNJQm@cluster0.u4jci.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["Eco-Tracker"]
 collections_user = db["user"]
@@ -205,6 +207,43 @@ def get_eco_suggestions():
         return jsonify({
             'error': 'Failed to get eco suggestions'
         }), 500
+
+@app.route('/ocr/power', methods=['POST'])
+def power():
+
+    ai = MetaAI()
+    appliances=request.form.get('appliances')
+    residents=request.form.get('residents')
+    usesEV=request.form.get('usesEV')
+    uid = request.form.get('userID')
+
+    if 'image' not in request.files:
+        return jsonify({"error": "No image provided"}), 400
+
+    image = Image.open(request.files['image'])
+    genai.configure(api_key="AIzaSyD7bXAE5lZ_ny6a3LxJ51Xnn2VNVFY9ZgA")
+    # myfile = genai.upload_file(image)
+    # print(f"{myfile=}")
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    result = model.generate_content([image, "\n\n", "give me the amount of electricity consumed in kWh rounded upto second decimal value and month of the consumption, by reading the given photo \n this amount should be in json form in the format {'energy'='amount of energy', 'month,='only month of consumption'}"])
+
+
+    # Process the image as needed for disease detection
+    # For example, pass it to a pre-trained ML model for prediction
+  # Replace with actual model inference
+    if collections_user.find_one({'username' : uid }):
+        data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
+        collections_user.update_one(
+            {'username': uid},
+            {'$push': {'statistics': {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result": result.text}}}
+        )
+
+    
+
+    return ({'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
