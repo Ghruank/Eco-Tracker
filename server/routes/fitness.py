@@ -19,10 +19,6 @@ db = client["Eco-Tracker"]
 collections_user = db["user"]
 
 app.register_blueprint(auth_bp)
-
-# # Not recommended for production! Use environment variables instead
-# CLIENT_ID = "CLIENT_ID"
-# CLIENT_SECRET = "CLIENT_SECRET"
 load_dotenv()
 
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -43,8 +39,7 @@ def login():
         CLIENT_CONFIG,
         scopes=['https://www.googleapis.com/auth/fitness.activity.read',
                 'https://www.googleapis.com/auth/fitness.location.read',
-                'https://www.googleapis.com/auth/userinfo.profile',
-                  ''  # Add this scope
+                'https://www.googleapis.com/auth/userinfo.profile'
                 ],
         redirect_uri=CLIENT_CONFIG['web']['redirect_uris'][0]
     )
@@ -85,8 +80,7 @@ def get_steps():
         
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        
-        # Simplified body - let's try with just one data source first
+
         body = {
             "aggregateBy": [{
                 "dataTypeName": "com.google.step_count.delta",
@@ -97,10 +91,7 @@ def get_steps():
             "endTimeMillis": int(end.timestamp() * 1000)
         }
         
-        # Get steps data
         response = fitness.users().dataset().aggregate(userId="me", body=body).execute()
-        
-        # Process steps first
         daily_stats = []
         for bucket in response.get('bucket', []):
             date = datetime.fromtimestamp(int(bucket['startTimeMillis']) / 1000).strftime('%Y-%m-%d')
@@ -109,7 +100,6 @@ def get_steps():
                 if dataset['point']:
                     steps = dataset['point'][0]['value'][0]['intVal']
             
-            # Now get distance in a separate request
             distance_body = {
                 "aggregateBy": [{
                     "dataTypeName": "com.google.distance.delta",
@@ -172,16 +162,14 @@ def get_steps():
 
 ai = MetaAI()
 
-@app.route('/ai/suggestions', methods=['POST'])
+@app.route('/ai', methods=['POST'])
 def get_eco_suggestions():
     try:
-        print("hi")  # Debug print
-        # Extract data from request
+        print("hi")  
         data = request.json
         steps_data = data.get('stepsData', {})
         weekly_avg = data.get('weeklyAverage', {})
-        
-        # Construct the prompt
+    
         message = (
             f"As an eco-conscious AI assistant, analyze this user's activity data and provide feedback. "
             f"The user walks {weekly_avg.get('avgSteps', 0)} steps on average per day, "
@@ -222,16 +210,10 @@ def power():
 
     image = Image.open(request.files['image'])
     genai.configure(api_key="AIzaSyD7bXAE5lZ_ny6a3LxJ51Xnn2VNVFY9ZgA")
-    # myfile = genai.upload_file(image)
-    # print(f"{myfile=}")
 
     model = genai.GenerativeModel("gemini-1.5-flash")
     result = model.generate_content([image, "\n\n", "give me the amount of electricity consumed in kWh rounded upto second decimal value and month of the consumption, by reading the given photo \n this amount should be in json form in the format {'energy'='amount of energy', 'month,='only month of consumption'}"])
 
-
-    # Process the image as needed for disease detection
-    # For example, pass it to a pre-trained ML model for prediction
-  # Replace with actual model inference
     if collections_user.find_one({'username' : uid }):
         data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
         collections_user.update_one(

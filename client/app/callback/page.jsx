@@ -18,16 +18,11 @@ export default function Callback() {
           );
           const data = await response.json();
 
-          // Store all the relevant data
           localStorage.setItem("token", data.token);
           if (data.name) localStorage.setItem("userName", data.name);
           if (data.picture) localStorage.setItem("userPicture", data.picture);
-          // if (data.email) localStorage.setItem("userEmail", data.email);
 
-          // Redirect to dashboard immediately
           router.push("/dashboard");
-
-          // If this was initiated from signup page, fetch data in background
           if (localStorage.getItem("isGoogleSignup")) {
             fetch("http://localhost:5000/steps", {
               headers: {
@@ -55,5 +50,5 @@ export default function Callback() {
     handleCallback();
   }, [router]);
 
-  return null; // Return null instead of loading message
+  return null; 
 }

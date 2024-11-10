@@ -56,7 +56,6 @@ const SustainableSignUp = () => {
       const response = await fetch('http://localhost:5000/login');
       const data = await response.json();
       
-      // Store the auth URL in localStorage to identify this is a Google signup flow
       localStorage.setItem('isGoogleSignup', 'true');
       window.location.href = data.url;
     } catch (error) {
