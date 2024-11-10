@@ -1,9 +1,13 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
+import "./ocr.css"
 
 const CropDiseaseDetection = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [togglehide, settogglehide] = useState(true);
+  const [toggleapp, settoggleapp] = useState(false);
+  const[toggleExtra, settogglextra] = useState(false);
   const [image, setImage] = useState(null);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [cameraFacingMode, setCameraFacingMode] = useState("environment"); // Default to back camera on mobile
@@ -12,10 +16,25 @@ const CropDiseaseDetection = () => {
 
   // Toggle between front and back camera on mobile devices
   const toggleCamera = () => {
+    settogglehide(true)
+    settoggleapp(false)
+    settogglextra(false)
+
     setCameraFacingMode((prev) =>
       prev === "environment" ? "user" : "environment"
     );
   };
+  const toggleCamera_flip_1= ()=>{
+    settogglehide(false)
+    settoggleapp(true)
+    settogglextra(false)
+  }
+
+  const toggleCamera_flip_2= ()=>{
+    settogglehide(false)
+    settoggleapp(false)
+    settogglextra(true)
+  }
 
   // Start video stream with the selected camera mode
   const startVideo = async () => {
@@ -117,15 +136,36 @@ const CropDiseaseDetection = () => {
           <b>Send to server</b>
         </button>
       </div>
+      <div className="video-container">
       <video
+      className = 'video'
         ref={videoRef}
-        width="60%"
-        height="60%"
-        style={{ display: isVideoPlaying ? "block" : "none" }}
+        width={togglehide? '60%': '0px'}
+        height={togglehide? '60%': '0px'}
+        style={{ display: (isVideoPlaying && togglehide)? "block" : "hide" }}
         autoPlay
         playsInline
         muted
       />
+      </div>
+      <div className ={toggleapp? 'appContainer': 'notAppContainer'} >
+        <h2>Appliances Used: </h2>
+        <div className= "appliance">AC</div>
+        <div className= "appliance">Heater</div>
+        <div className= "appliance">Microvawe</div>
+        <div className= "appliance">Fridge</div>
+        <div className= "appliance">Geyser</div>
+        <div className= "appliance">Oven</div>
+        <div className= "appliance">Iron</div>
+      </div>
+
+      <div className = {toggleExtra? 'extraContainer': 'notExtraContainer'}>
+        <h2> How many people live ?</h2>
+        <h2>Do You use EV ?</h2>
+        <div className = "extra">Yes</div>
+        <div className = "extra">No</div>
+      </div>
+
       <canvas
         ref={canvasRef}
         width="640"
@@ -133,14 +173,19 @@ const CropDiseaseDetection = () => {
         style={{ display: "none" }}
       />
       <div>
-        <button onClick={toggleCamera}>Switch Camera</button>
         <button onClick={captureImage}>Capture and Send</button>
       </div>
-      {diseasePrediction && (
-        <div style={{ marginTop: "20px", fontSize: "18px", color: "green" }}>
-          <strong>Prediction:</strong> {diseasePrediction}
+      <div className="bottom-bar">
+        <div className="first Slide" onClick={toggleCamera}>  
+          1
         </div>
-      )}
+        <div className="second Slide" onClick={toggleCamera_flip_1}> 
+          2
+        </div>
+        <div className="third Slide" onClick={toggleCamera_flip_2}> 
+          3
+        </div>
+      </div>
     </div>
   );
 };
