@@ -32,12 +32,11 @@ def power():
 
     model = genai.GenerativeModel("gemini-1.5-flash")
     result = model.generate_content([image, "\n\n", "give me the amount of electricity consumed in kWh, rounded upto second decimal value by reading the given photo \n this amount should be in json form in the format {'energy'='amount of energy'}"])
-    print(f"{result.text=}")
     # Process the image as needed for disease detection
     # For example, pass it to a pre-trained ML model for prediction
-    prediction = "Example Disease Prediction"  # Replace with actual model inference
+  # Replace with actual model inference
 
-    return jsonify({"prediction": prediction})
+    return ({"result": result.text})
 
 
 if __name__ == '__main__':

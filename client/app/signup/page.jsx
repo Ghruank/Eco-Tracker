@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Leaf } from 'lucide-react'
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Leaf } from 'lucide-react';
 
-export default function SustainableSignUp() {
-  const [credentials, setCredentials] = useState({ email: "", password: "", confirmPassword: "" })
-  const [error, setError] = useState("")
-  const router = useRouter()
+const SustainableSignUp = () => {
+  const [credentials, setCredentials] = useState({ email: "", password: "", confirmPassword: "" });
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     
     if (credentials.password !== credentials.confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     try {
@@ -28,27 +28,40 @@ export default function SustainableSignUp() {
           email: credentials.email,
           password: credentials.password,
         }),
-      })
+      });
 
-      const json = await response.json()
+      const json = await response.json();
 
       if (response.ok) {
         if (json.authToken) {
-          console.log("SignUp Success")
-          localStorage.setItem('token', json.authToken)
-          router.push(`/dashboard/${json.userId}`)
+          console.log("SignUp Success");
+          localStorage.setItem('token', json.authToken);
+          router.push(`/dashboard/${json.userId}`);
         }
       } else {
-        setError(json.error || "Failed to sign up")
+        setError(json.error || "Failed to sign up");
       }
     } catch (error) {
-      setError("An error occurred while signing up. Please try again.")
+      setError("An error occurred while signing up. Please try again.");
     }
-  }
+  };
 
   const onChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value })
-  }
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/login');
+      const data = await response.json();
+      
+      // Store the auth URL in localStorage to identify this is a Google signup flow
+      localStorage.setItem('isGoogleSignup', 'true');
+      window.location.href = data.url;
+    } catch (error) {
+      setError("Failed to initialize Google Sign In");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-green-50 dark:bg-green-900">
@@ -117,14 +130,24 @@ export default function SustainableSignUp() {
             Sign Up
           </button>
         </form>
+        <div className="mt-4">
+          <button
+            onClick={handleGoogleSignIn}
+            className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Sign in with Google
+          </button>
+        </div>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <p className="text-sm text-center text-green-600 dark:text-green-300">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link href="/login" className="font-medium text-green-800 hover:underline dark:text-green-200">
             Login to your eco-account
           </Link>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default SustainableSignUp;
