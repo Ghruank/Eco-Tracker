@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import PerformanceChart from '../dashboard/PerformanceChart';
+import { CloudCog } from 'lucide-react';
 import Sidebar from '../dashboard/sidebar';
 export default function Home() {
   const [steps, setSteps] = useState([]);
@@ -52,6 +53,7 @@ export default function Home() {
       }
       
       const data = await response.json();
+      console.log(data)
       if (data.error) {
         console.error('API Error:', data.error);
         return;
@@ -150,6 +152,7 @@ export default function Home() {
   const getEcoSuggestions = async () => {
     setIsLoadingSuggestions(true);
     try {
+      consol
       const weeklyAverage = calculateWeeklyAverage(steps);
       const todayData = steps.length > 0 ? steps[steps.length - 1] : { steps: 0, distance: 0 };
 
@@ -172,6 +175,7 @@ export default function Home() {
           }
         })
       });
+      
 
       console.log('Response status:', response.status);  // Debug log
 
@@ -195,6 +199,14 @@ export default function Home() {
       getEcoSuggestions();
     }
   }, [steps, user]);
+
+  useEffect(() => {
+    console.log('ecoSuggestions changed:', ecoSuggestions);
+  }, [ecoSuggestions]);
+
+  useEffect(() => {
+    console.log('isLoadingSuggestions changed:', isLoadingSuggestions);
+  }, [isLoadingSuggestions]);
 
   return (
     <div>
