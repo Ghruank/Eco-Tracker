@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect } from 'react';
 import PerformanceChart from '../dashboard/PerformanceChart';
+import { CloudCog } from 'lucide-react';
+import Sidebar from '../dashboard/sidebar';
 export default function Home() {
   const [steps, setSteps] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +53,7 @@ export default function Home() {
       }
       
       const data = await response.json();
+      console.log(data)
       if (data.error) {
         console.error('API Error:', data.error);
         return;
@@ -149,6 +152,7 @@ export default function Home() {
   const getEcoSuggestions = async () => {
     setIsLoadingSuggestions(true);
     try {
+      consol
       const weeklyAverage = calculateWeeklyAverage(steps);
       const todayData = steps.length > 0 ? steps[steps.length - 1] : { steps: 0, distance: 0 };
 
@@ -171,6 +175,7 @@ export default function Home() {
           }
         })
       });
+      
 
       console.log('Response status:', response.status);  // Debug log
 
@@ -195,8 +200,19 @@ export default function Home() {
     }
   }, [steps, user]);
 
+  useEffect(() => {
+    console.log('ecoSuggestions changed:', ecoSuggestions);
+  }, [ecoSuggestions]);
+
+  useEffect(() => {
+    console.log('isLoadingSuggestions changed:', isLoadingSuggestions);
+  }, [isLoadingSuggestions]);
+
   return (
-    <div className="p-8">
+    <div>
+ <Sidebar/>
+    <div className="p-8 bg-white">
+     
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Step Counter</h1>
@@ -240,12 +256,12 @@ export default function Home() {
         {isLoggedIn && (
           <div className="flex flex-col mt-4">
             <div className="w-full mb-8 px-2 pb-2">
-              <PerformanceChart performanceData={performanceData} style={{ backgroundColor: '#ffffff', color: '#fff' }} />
+              <PerformanceChart performanceData={performanceData} style={{  color: '#fff' }} />
             </div>
 
             <div className="flex flex-row gap-4 mb-8">
               <div className="flex-1 bg-white p-6 rounded shadow">
-                <h2 className="text-xl font-bold mb-4">Today's Stats</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-800">Today's Stats</h2>
                 <div className="text-2xl font-bold text-blue-600">
                   {(steps.length > 0 ? steps[steps.length - 1].steps : 0).toLocaleString()} steps
                 </div>
@@ -255,7 +271,7 @@ export default function Home() {
               </div>
 
               <div className="flex-1 bg-white p-6 rounded shadow">
-                <h2 className="text-xl font-bold mb-4">7-Day Average</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-800">7-Day Average</h2>
                 <div className="text-2xl font-bold text-green-600">
                   {calculateWeeklyAverage(steps).avgSteps.toLocaleString()} steps
                 </div>
@@ -267,9 +283,9 @@ export default function Home() {
 
             {steps.length > 0 && steps[steps.length - 1].activities && (
               <div className="bg-white p-4 rounded shadow">
-                <div className="font-medium">Today's Activities:</div>
+                <div className="text-gray-800 font-medium">Today's Activities:</div>
                 {steps[steps.length - 1].activities.map((activity, index) => (
-                  <div key={index}>
+                  <div key={index} className='text-gray-800'>
                     {getActivityName(activity.type)}: {activity.duration_minutes} minutes
                   </div>
                 ))}
@@ -320,6 +336,7 @@ export default function Home() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

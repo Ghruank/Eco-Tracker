@@ -45,9 +45,28 @@
 
 "use client";
 import Sidebar from "./sidebar";
+import { Award } from "lucide-react";
 
-import PerformanceMetrics from "./Scores";
+
 import EcoPointsHistogram from "./EcoPoints";
+
+const PerformanceMetrics = ({ coins }) => (
+    <div className="bg-white rounded-lg shadow-lg p-6 text-green-800">
+      <h2 className="text-2xl font-bold mb-4 flex items-center">
+        <Award className="mr-2" /> Eco Coins
+      </h2>
+      <div className="text-4xl font-bold">{coins}</div>
+      <p className="mt-2 text-sm">Keep up the great work!</p>
+    </div>
+  )
+
+  const EcoTip = ({ tip }) => (
+    <div className="bg-green-100 rounded-lg p-4 text-green-800 mt-4">
+      <h3 className="font-bold mb-2">Eco Tip of the Day</h3>
+      <p>{tip}</p>
+    </div>
+  )
+
 
 export default function Dashboard() {
     // Sample performance data (in a real app, this would come from your backend)
@@ -77,7 +96,8 @@ export default function Dashboard() {
   </div>
 </div>
                         <div className="flex-1 px-2 mt-12 md:mt-0 " style={{ backgroundColor: '#ffffff', color: '#0b3822' }}> {/* Lighter green */}
-                            <PerformanceMetrics scores={coins} />
+                        <PerformanceMetrics coins={coins} />
+                        <EcoTip tip="Using a reusable water bottle can save up to 1,460 plastic bottles per year!" />
                         </div>
                     </div>
                 </div>

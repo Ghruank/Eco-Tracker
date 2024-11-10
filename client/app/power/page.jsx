@@ -25,9 +25,11 @@ export default function EcoFriendlyEnergyTracker() {
     "Blender",
     "Television",
     "PC",
-    "Vaccum",
+    "Vacuum",
     "Grinder",
   ];
+
+  const usageCategories = ["Low", "Moderate", "High", "Very High"];
 
   useEffect(() => {
     if (activeStep === 1) {
@@ -81,14 +83,14 @@ export default function EcoFriendlyEnergyTracker() {
   const toggleAppliance = (appliance) => {
     setAppliances((prev) => ({
       ...prev,
-      [appliance]: prev[appliance] ? null : 0,
+      [appliance]: prev[appliance] ? null : "Low",
     }));
   };
 
-  const updateApplianceHours = (appliance, hours) => {
+  const updateApplianceUsage = (appliance, usage) => {
     setAppliances((prev) => ({
       ...prev,
-      [appliance]: hours,
+      [appliance]: usage,
     }));
   };
 
@@ -96,10 +98,7 @@ export default function EcoFriendlyEnergyTracker() {
     switch (activeStep) {
       case 1:
         return (
-          <div
-            id="camera-container"
-            className="relative w-full h-[calc(100vh-280px)] max-h-[600px]"
-          >
+          <div className="relative w-full h-[calc(100vh-280px)] max-h-[600px]">
             {capturedImage ? (
               <img
                 src={capturedImage}
@@ -115,20 +114,13 @@ export default function EcoFriendlyEnergyTracker() {
               />
             )}
             {cameraActive && (
-              <div
-                id="camera-status"
-                className="absolute px-3 py-1 text-sm text-white bg-green-600 rounded-full top-4 right-4"
-              >
+              <div className="absolute px-3 py-1 text-sm text-white bg-green-600 rounded-full top-4 right-4">
                 Camera is active
               </div>
             )}
-            <div
-              id="camera-controls"
-              className="absolute flex justify-center space-x-4 bottom-4 left-4 right-4"
-            >
+            <div className="absolute flex justify-center space-x-4 bottom-4 left-4 right-4">
               {!capturedImage ? (
                 <button
-                  id="capture-button"
                   onClick={captureImage}
                   className="px-4 py-2 text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
                 >
@@ -136,7 +128,6 @@ export default function EcoFriendlyEnergyTracker() {
                 </button>
               ) : (
                 <button
-                  id="retake-button"
                   onClick={retakePhoto}
                   className="px-4 py-2 text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
                 >
@@ -144,12 +135,8 @@ export default function EcoFriendlyEnergyTracker() {
                   Retake Photo
                 </button>
               )}
-              <label
-                id="upload-label"
-                className="px-4 py-2 text-white transition-colors bg-green-600 rounded-lg cursor-pointer hover:bg-green-700"
-              >
+              <label className="px-4 py-2 text-white transition-colors bg-green-600 rounded-lg cursor-pointer hover:bg-green-700">
                 <input
-                  id="file-upload"
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
@@ -163,37 +150,44 @@ export default function EcoFriendlyEnergyTracker() {
         );
       case 2:
         return (
-          <div id="appliances-container" className="space-y-6">
+          <div className="space-y-6">
             <h2 className="text-2xl font-semibold text-green-800">
-              Select Your Appliances
+              Select Your Appliances and Usage
             </h2>
             <ul className="space-y-4">
               {applianceList.map((appliance) => (
-                <li key={appliance} className="flex items-center space-x-4">
+                <li
+                  key={appliance}
+                  className="flex flex-col sm:flex-row sm:items-center sm:space-x-4"
+                >
                   <button
-                    id={`appliance-${appliance}`}
                     onClick={() => toggleAppliance(appliance)}
-                    className={`flex-grow p-3 rounded-lg text-sm font-medium transition-colors ${
-                      appliances[appliance] !== undefined
+                    className={`flex-grow p-3 rounded-lg text-sm font-medium transition-colors mb-2 sm:mb-0 ${
+                      appliances[appliance]
                         ? "bg-green-600 text-white"
                         : "bg-green-100 text-green-800 hover:bg-green-200"
                     }`}
                   >
                     {appliance}
                   </button>
-                  {appliances[appliance] !== undefined && (
-                    <input
-                      id={`hours-${appliance}`}
-                      type="number"
-                      min="0"
-                      max="24"
-                      value={appliances[appliance] || ""}
-                      onChange={(e) =>
-                        updateApplianceHours(appliance, e.target.value)
-                      }
-                      className="w-20 p-2 text-green-800 border border-green-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      placeholder="Hours"
-                    />
+                  {appliances[appliance] && (
+                    <div className="flex flex-wrap gap-2">
+                      {usageCategories.map((category) => (
+                        <button
+                          key={category}
+                          onClick={() =>
+                            updateApplianceUsage(appliance, category)
+                          }
+                          className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                            appliances[appliance] === category
+                              ? "bg-green-600 text-white"
+                              : "bg-green-100 text-green-800 hover:bg-green-200"
+                          }`}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
                   )}
                 </li>
               ))}
@@ -202,8 +196,8 @@ export default function EcoFriendlyEnergyTracker() {
         );
       case 3:
         return (
-          <div id="household-info" className="space-y-8">
-            <div id="residents-container" className="space-y-4">
+          <div className="space-y-8">
+            <div className="space-y-4">
               <label
                 htmlFor="residents"
                 className="block text-xl font-semibold text-green-800"
@@ -220,13 +214,12 @@ export default function EcoFriendlyEnergyTracker() {
                 placeholder="Enter number of residents"
               />
             </div>
-            <div id="ev-usage-container" className="space-y-4">
+            <div className="space-y-4">
               <p className="block text-xl font-semibold text-green-800">
                 Do you use an Electric Vehicle (EV)?
               </p>
               <div className="flex space-x-4">
                 <button
-                  id="ev-yes"
                   onClick={() => setUsesEV(true)}
                   className={`flex-1 px-6 py-3 text-lg font-medium rounded-lg transition-colors ${
                     usesEV === true
@@ -237,7 +230,6 @@ export default function EcoFriendlyEnergyTracker() {
                   Yes
                 </button>
                 <button
-                  id="ev-no"
                   onClick={() => setUsesEV(false)}
                   className={`flex-1 px-6 py-3 text-lg font-medium rounded-lg transition-colors ${
                     usesEV === false
@@ -265,7 +257,6 @@ export default function EcoFriendlyEnergyTracker() {
   const submitData = async () => {
     const formData = new FormData();
 
-    // Append image data
     if (capturedImage) {
       const response = await fetch(capturedImage);
       const blob = await response.blob();
@@ -305,10 +296,10 @@ export default function EcoFriendlyEnergyTracker() {
   };
 
   return (
-    <div id="eco-tracker" className="flex flex-col min-h-screen bg-green-50">
-      <div id="content-container" className="flex-grow overflow-y-auto">
+    <div className="flex flex-col min-h-screen bg-green-50">
+      <div className="flex-grow overflow-y-auto">
         <div className="max-w-3xl p-4 mx-auto">
-          <div id="header" className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center mb-6">
             <Leaf className="w-10 h-10 mr-3 text-green-600" />
             <h1 className="text-3xl font-bold text-center text-green-800">
               Eco-Friendly Energy Tracker
@@ -319,13 +310,12 @@ export default function EcoFriendlyEnergyTracker() {
         </div>
       </div>
 
-      <div id="navigation" className="bg-white shadow-lg">
+      <div className="bg-white shadow-lg">
         <div className="max-w-3xl p-4 mx-auto">
-          <div id="step-buttons" className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             {[1, 2, 3].map((step) => (
               <button
                 key={step}
-                id={`step-${step}`}
                 onClick={() => setActiveStep(step)}
                 className={`flex items-center justify-center w-16 h-16 rounded-full text-lg font-medium transition-colors ${
                   activeStep === step
@@ -341,7 +331,6 @@ export default function EcoFriendlyEnergyTracker() {
           </div>
           {activeStep < 3 ? (
             <button
-              id="next-step"
               onClick={nextStep}
               className="w-full py-3 mt-6 text-lg font-medium text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
             >
@@ -349,7 +338,6 @@ export default function EcoFriendlyEnergyTracker() {
             </button>
           ) : (
             <button
-              id="submit-data"
               onClick={submitData}
               className="w-full py-3 mt-6 text-lg font-medium text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
             >

@@ -200,7 +200,7 @@ def get_eco_suggestions():
         suggestions = response.get("message", "Unable to generate suggestions at this time.")
         
         print("AI Suggestions:", suggestions)
-        return jsonify({"message": suggestions})
+        return ({"message": suggestions})
 
     except Exception as e:
         print(f"Error getting eco suggestions: {str(e)}")
