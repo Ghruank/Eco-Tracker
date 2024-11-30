@@ -214,6 +214,10 @@ def power():
     model = genai.GenerativeModel("gemini-1.5-flash")
     result = model.generate_content([image, "\n\n", "give me the amount of electricity consumed in kWh rounded upto second decimal value and month of the consumption, by reading the given photo \n this amount should be in json form in the format {'energy'='amount of energy', 'month,='only month of consumption'}"])
 
+
+    # Process the image as needed for disease detection
+    # For example, pass it to a pre-trained ML model for prediction
+  # Replace with actual model inference
     if collections_user.find_one({'username' : uid }):
         collections_user.update_one(
             {'username': uid},
@@ -232,4 +236,3 @@ def power():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

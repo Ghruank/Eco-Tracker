@@ -3,9 +3,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Camera, Leaf, Users, Zap, Upload, RefreshCw } from "lucide-react";
 
-import {  Award, Gauge, Plane, BatteryCharging } from 'lucide-react';
-import { Bar, XAxis, YAxis, Tooltip, BarChart, ResponsiveContainer } from 'recharts';
-import Link from 'next/link';
+import { Award, Gauge, Plane, BatteryCharging } from "lucide-react";
+import {
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  ResponsiveContainer,
+} from "recharts";
+import Link from "next/link";
 
 export default function EcoFriendlyEnergyTracker() {
   const videoRef = useRef(null);
@@ -15,43 +22,52 @@ export default function EcoFriendlyEnergyTracker() {
   const [usesEV, setUsesEV] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [result1, setResult1] = useState(null);
 
   const Sidebar = () => (
-    <div className="fixed left-0 top-0 h-full w-16 hover:w-48 bg-green-800 text-white transition-all duration-300">
+    <div className="fixed top-0 left-0 w-16 h-full text-white transition-all duration-300 bg-green-800 hover:w-48">
       <div className="flex flex-col items-center py-4 space-y-8">
         <div className="w-full px-4">
           <div className="flex items-center">
-            <div className="w-8 flex-shrink-0">
+            <div className="flex-shrink-0 w-8">
               <Leaf className="w-8 h-8" />
             </div>
-            <span className="ml-4 text-white text-lg transition-all duration-300">Greenit</span>
+            <span className="ml-4 text-lg text-white transition-all duration-300">
+              Greenit
+            </span>
           </div>
         </div>
-        
+
         <Link href="/dashboard" className="w-full px-4">
           <div className="flex items-center">
-            <div className="w-8 flex-shrink-0">
+            <div className="flex-shrink-0 w-8">
               <Gauge className="w-6 h-6" />
             </div>
-            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Dashboard</span>
+            <span className="ml-4 text-lg text-white transition-all duration-300 hover:font-bold">
+              Dashboard
+            </span>
           </div>
         </Link>
-  
+
         <Link href="/Travel" className="w-full px-4">
           <div className="flex items-center">
-            <div className="w-8 flex-shrink-0">
+            <div className="flex-shrink-0 w-8">
               <Plane className="w-6 h-6" />
             </div>
-            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Travel</span>
+            <span className="ml-4 text-lg text-white transition-all duration-300 hover:font-bold">
+              Travel
+            </span>
           </div>
         </Link>
-  
+
         <Link href="/energy" className="w-full px-4">
           <div className="flex items-center">
-            <div className="w-8 flex-shrink-0">
+            <div className="flex-shrink-0 w-8">
               <BatteryCharging className="w-6 h-6" />
             </div>
-            <span className="ml-4 text-white text-lg transition-all duration-300 hover:font-bold">Energy</span>
+            <span className="ml-4 text-lg text-white transition-all duration-300 hover:font-bold">
+              Energy
+            </span>
           </div>
         </Link>
       </div>
@@ -246,7 +262,7 @@ export default function EcoFriendlyEnergyTracker() {
             <div className="space-y-4">
               <label
                 htmlFor="residents"
-                className="block text-xl font-semibold text-green-800"
+                className="block text-xl font-semibold text-green-800 black"
               >
                 How many people live in your household?
               </label>
@@ -335,6 +351,7 @@ export default function EcoFriendlyEnergyTracker() {
       }
       const data = await response.json(); // Await the resolved JSON data
       console.log(data.message);
+      setResult1(data.message.message);
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("An error occurred. Please try again.");
@@ -354,6 +371,9 @@ export default function EcoFriendlyEnergyTracker() {
 
           {renderStep()}
         </div>
+      </div>
+      <div className="p-5 text-black bg-color-gray">
+        <b>{result1}</b>
       </div>
 
       <div className="bg-white shadow-lg">
