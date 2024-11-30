@@ -172,7 +172,7 @@ def get_steps():
 
 ai = MetaAI()
 
-@app.route('/ai/suggestions', methods=['POST'])
+@app.route('/ai', methods=['POST'])
 def get_eco_suggestions():
     try:
         print("hi")  # Debug print
@@ -229,22 +229,21 @@ def power():
     result = model.generate_content([image, "\n\n", "give me the amount of electricity consumed in kWh rounded upto second decimal value and month of the consumption, by reading the given photo \n this amount should be in json form in the format {'energy'='amount of energy', 'month,='only month of consumption'}"])
 
 
-    # Process the image as needed for disease detection
-    # For example, pass it to a pre-trained ML model for prediction
-  # Replace with actual model inference
     if collections_user.find_one({'username' : uid }):
-        data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
         collections_user.update_one(
             {'username': uid},
             {'$push': {'statistics': {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result": result.text}}}
         )
 
     
+    data = {'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text}
+    response = ai.prompt(message=f"{data} \n\ni am making an eco friendly lifestyle tracking web app it is an ai driven app that tracks the users activities and suddest them ecofriendly measures one of the features of my app is to give advice about how to reduce your energy consumption by analysing the amount of electricity which is mentioned in the result in energy it also take in information like month, no. of residents in the users family/household 'appliance' has all the electronic  appliences that are used by the users with the numbers of hours it is being used daily give me an advice on the user behaviour and advise him on what factors he can improve in his day to day lifestylemake it 10 to 12 lines make it short and concise also just give me the advice, i want no introductions")
+    print(response)
 
-    return ({'appliances': appliances, 'residents': residents, 'usesEV': usesEV, "result":result.text})
+
+    return jsonify(response)
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-

@@ -38,14 +38,14 @@ export default function Component() {
     gsap.from(".hero-content", {
       opacity: 0,
       y: 20,
-      delay: 2.4,
+      delay: 0.5,
       duration: 1,
     });
 
     gsap.from(".hero-image", {
       opacity: 0,
       scale: 0.8,
-      delay: 3,
+      delay: 0.5,
       duration: 1,
     });
 
@@ -53,7 +53,7 @@ export default function Component() {
       y: -20,
       opacity: 0,
       duration: 1,
-      delay: 3.5,
+      delay: 2.5,
       stagger: 0.2,
     });
   }, []);
